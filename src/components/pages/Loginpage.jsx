@@ -1,7 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginimage from "../../assets/images/loginimage.jpg";
-
+import axios from "axios";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../context/authContext";
+import { jwtDecode } from "jwt-decode";
 function Loginpage() {
+  
+  const { setLogedIn, setUser } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      axios
+        .post("http://localhost:5000/api/v1/auth/login", {
+          email,
+          password,
+        })
+        .then((responce) => {
+          console.log(responce);
+          if (responce.status == 200) {
+            toast.success(responce.data.message);
+            const decoded = jwtDecode(responce.data.token);
+            // console.log(decoded.userid);
+            localStorage.setItem("id", decoded.userid);
+            localStorage.setItem("token", responce.data.token);
+            setUser(decoded);
+            navigate("/");
+            setLogedIn(true);
+            setEmail("");
+            setName("");
+            setPassword("");
+          } else {
+            toast.info(responce.responce.data.message);
+            setEmail("");
+            setName("");
+            setPassword("");
+          }
+        });
+    } catch (err) {
+      toast.error("Internal Error");
+      throw err;
+    }
+  };
+
   return (
     <main className="flex justify-center bg-[#c4f254] w-full h-[100vh] relative ">
       <div className=" bg-white h-[70%] flex relative  shadow-4xl rounded-2xl realtive top-24">
@@ -15,14 +59,12 @@ function Loginpage() {
           <h1 className="text-[#c4f254] text-3xl font-bold  text-center">
             Sign In
           </h1>
-          <form className="w-full ">
-            
-            
+          <form className="w-full " onSubmit={handleSubmit}>
             <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label
                   className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  for="inline-full-name"
+                  htmlFor="inline-full-name"
                 >
                   Email
                 </label>
@@ -32,6 +74,9 @@ function Loginpage() {
                   className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-[#c4f254]"
                   id="inline-full-name"
                   type="email"
+                  value={email}
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="example@me.com"
                 />
               </div>
@@ -40,7 +85,7 @@ function Loginpage() {
               <div className="md:w-1/3">
                 <label
                   className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  for="inline-password"
+                  htmlFor="inline-password"
                 >
                   Password
                 </label>
@@ -50,6 +95,9 @@ function Loginpage() {
                   className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-[#c4f254]"
                   id="inline-password"
                   type="password"
+                  value={password}
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="******************"
                 />
               </div>
@@ -66,7 +114,7 @@ function Loginpage() {
                 </button>
                 <button
                   className="shadow bg-[#c4f254]  hover:bg-white hover:border-[#c4f254] cursor-pointer focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
-                  type="button"
+                  type="submit"
                 >
                   Sign In
                 </button>

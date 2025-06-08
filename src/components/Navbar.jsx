@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GiShoppingBag } from "react-icons/gi";
 import { Link } from "react-router-dom";
+
 function Navbar() {
-  const [islogin, setislogin] = useState(false);
+  const id = localStorage.getItem("id");
   return (
     <nav className="flex items-center bg-white z-10 justify-between px-15 shadow-2xl fixed w-screen py-1 ">
       {/* logo */}
@@ -52,9 +52,12 @@ function Navbar() {
       </div>
       {/* profile / */}
 
-      {islogin ? (
+      {localStorage.getItem("id") != "" ? (
         <div>
-          <FaRegUserCircle className="text-3xl cursor-pointer" />
+          <Link to={`/profile/${id}`}>
+            {" "}
+            <FaRegUserCircle className="text-3xl cursor-pointer" />
+          </Link>
         </div>
       ) : (
         <div className="flex items-center justify-evenly gap-5">

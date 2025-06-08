@@ -2,16 +2,44 @@ import { Link } from "react-router-dom";
 import loginimage from "../../assets/images/loginimage.jpg";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Loginpage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    
+    try {
+      axios
+        .post("http://localhost:5000/api/v1/auth/register", {
+          name,
+          email,
+          password,
+        })
+        .then((responce) => {
+          console.log(responce);
+          if (responce.status == 200) {
+            toast.success(responce.data.message);
+            navigate("/login");
+            setEmail("");
+            setName("");
+            setPassword("");
+          } else {
+            toast.info(responce.data.message);
+            setEmail("");
+            setName("");
+            setPassword("");
+          }
+        });
+    } catch (err) {
+      toast.error("Internal Error");
+      throw err;
+    }
+
     // console.log(name, email, password);
     // toast.success(email);
   };
