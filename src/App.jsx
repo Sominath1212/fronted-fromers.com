@@ -1,0 +1,31 @@
+import Navbar from "./components/Navbar";
+import { Route, Routes } from "react-router-dom";
+import Loginpage from "./components/pages/Loginpage";
+import Registerpage from "./components/pages/Registerpage";
+import Homepage from "./components/pages/Homepage";
+import Productspage from "./components/pages/Productspage";
+import Cartpage from "./components/pages/Cartpage";
+import Aboutuspage from "./components/pages/Aboutuspage";
+import Contactuspage from "./components/pages/Contactuspage";
+import Policypage from "./components/pages/Policypage";
+import { ToastContainer } from "react-toastify";
+function App() {
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Loginpage />} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/sign-up" element={<Registerpage />} />
+        <Route path="/products" element={<Productspage />} />
+        <Route path="/cart" element={<Cartpage />} />
+        <Route path="/aboutus" element={<Aboutuspage />} />
+        <Route path="/contactus" element={<Contactuspage />} />
+        <Route path="/policy" element={<Policypage />} />
+      </Routes>
+      <ToastContainer />
+    </>
+  );
+}
+
+export default App;
