@@ -1,10 +1,17 @@
 import React from "react";
 
+import banner from "../../assets/images/background1.jpg";
 const Policypage = () => {
   return (
-    <section className="bg-black py-12 px-6 md:px-12">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-[#c4f254] mb-6 text-center">
+    <section className="bg-[#c4f254] relative min-h-screen overflow-y-hidden ">
+      <img
+        src={banner}
+        alt="Banner"
+        className="w-full h-full object-cover transition-all duration-1000"
+      />
+
+      <div className="absolute p-5  inset-0 overflow-y-hidden bg-[rgba(0,0,0,0.5)]  w-full h-full flex flex-col items-center justify-center text-white text-start ">
+        <h2 className="text-3xl font-bold text-white  mt-30  mb-5 text-center">
           Privacy Policy
         </h2>
 

@@ -8,6 +8,7 @@ import Cartpage from "./components/pages/Cartpage";
 import Aboutuspage from "./components/pages/Aboutuspage";
 import Contactuspage from "./components/pages/Contactuspage";
 import Policypage from "./components/pages/Policypage";
+import ProductDetails from "./components/pages/ProductDetails";
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from "./context/authContext";
 import { ProductContextProvider } from "./context/productContext";
@@ -28,6 +29,7 @@ function App() {
             <Route path="/contactus" element={<Contactuspage />} />
             <Route path="/policy" element={<Policypage />} />
             <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/productdetails/:id" element={<ProductDetails />} />
           </Routes>
           <ToastContainer />
         </AuthContextProvider>

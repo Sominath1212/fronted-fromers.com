@@ -1,9 +1,15 @@
 import React from "react";
 
+import banner from '../../assets/images/background1.jpg'
 const Aboutuspage = () => {
   return (
-    <section className="bg-black py-12 px-6 md:px-12">
-      <div className="max-w-5xl mx-auto text-center">
+    <section className="min-h-full text-white">
+      <img
+        src={banner}
+        alt="Banner"
+        className="w-full h-full object-cover transition-all duration-1000"
+      />
+      <div className="absolute px-20 inset-0 bg-[rgba(0,0,0,0.5)] top-12 w-full h-full flex flex-col items-center justify-center text-white text-center ">
         <h2 className="text-3xl md:text-4xl font-bold text-[#c4f254] mb-6">
           About Us
         </h2>
