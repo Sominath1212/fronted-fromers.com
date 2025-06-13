@@ -1,9 +1,12 @@
+import { useState, useEffect, useContext } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { GiShoppingBag } from "react-icons/gi";
 import { Link } from "react-router-dom";
-
+import { AuthContext } from "../context/authContext";
 function Navbar() {
-  const id = localStorage.getItem("id");
+  // console.log(`Bearer ${localStorage.getItem("token")}`);
+  const { isLogedIn } = useContext(AuthContext);
+  // console.log(`Bearer ${localStorage.getItem("token")}`);
   return (
     <nav className="flex items-center bg-white z-10 justify-between px-15 shadow-2xl fixed w-screen py-1 ">
       {/* logo */}
@@ -52,25 +55,23 @@ function Navbar() {
       </div>
       {/* profile / */}
 
-      {localStorage.getItem("id") != "" ? (
-        <div>
-          <Link to={`/profile/${id}`}>
-            {" "}
-            <FaRegUserCircle className="text-3xl cursor-pointer" />
-          </Link>
-        </div>
-      ) : (
+      {localStorage.getItem("token") === null ? (
         <div className="flex items-center justify-evenly gap-5">
           <Link to={"/login"}>
-            {" "}
-            <button className="flex text-center border-black border  rounded py-2 px-3 hover:text-black  hover:bg-[#c4f254] cursor-pointer">
+            <button className="flex text-center border-black border rounded py-2 px-3 hover:text-black hover:bg-[#c4f254] cursor-pointer">
               Login
             </button>
           </Link>
           <Link to={"/sign-up"}>
-            <button className="flex text-center border-black border  rounded py-2 px-3 hover:text-black  hover:bg-[#c4f254] cursor-pointer">
+            <button className="flex text-center border-black border rounded py-2 px-3 hover:text-black hover:bg-[#c4f254] cursor-pointer">
               Sign-Up
             </button>
+          </Link>
+        </div>
+      ) : (
+        <div>
+          <Link to={`/profile/${localStorage.getItem("id")}`}>
+            <FaRegUserCircle className="text-3xl cursor-pointer" />
           </Link>
         </div>
       )}

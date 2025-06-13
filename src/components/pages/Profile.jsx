@@ -12,7 +12,9 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("id");
+    localStorage.removeItem("username"); // optionally store username
     localStorage.removeItem("token");
+    localStorage.removeItem("LogedIn"); //
     navigate("/login");
   };
   return (

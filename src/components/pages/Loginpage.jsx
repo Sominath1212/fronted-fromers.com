@@ -1,49 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import loginimage from "../../assets/images/loginimage.jpg";
-import axios from "axios";
 import { useContext, useState } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
-import { jwtDecode } from "jwt-decode";
+import { ProductContext } from "../../context/productContext";
 function Loginpage() {
-  
-  const { setLogedIn, setUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      axios
-        .post("http://localhost:5000/api/v1/auth/login", {
-          email,
-          password,
-        })
-        .then((responce) => {
-          console.log(responce);
-          if (responce.status == 200) {
-            toast.success(responce.data.message);
-            const decoded = jwtDecode(responce.data.token);
-            // console.log(decoded.userid);
-            localStorage.setItem("id", decoded.userid);
-            localStorage.setItem("token", responce.data.token);
-            setUser(decoded);
-            navigate("/");
-            setLogedIn(true);
-            setEmail("");
-            setName("");
-            setPassword("");
-          } else {
-            toast.info(responce.responce.data.message);
-            setEmail("");
-            setName("");
-            setPassword("");
-          }
-        });
-    } catch (err) {
-      toast.error("Internal Error");
-      throw err;
-    }
+
+    login({ email, password });
   };
 
   return (

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import bannerImage from "../../assets/images/1.png";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
-
+import { ProductContext } from "../../context/productContext";
+import defaultProductImage from "../../assets/images/farmproduct.jpg";
 const LandingPage = () => {
+  const { fetchData, products } = useContext(ProductContext);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <main className="bg-[#c4f254] text-white">
       {" "}
@@ -37,36 +43,32 @@ const LandingPage = () => {
         {/* Popular Products Section */}
         <section className="py-16 text-center ">
           <h2 className="text-3xl font-semibold mb-10">Popular Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4 max-w-6xl mx-auto">
-            {[
-              {
-                name: "Organic Urea",
-                price: "₹499",
-                img: "https://via.placeholder.com/150",
-              },
-              {
-                name: "Compost Mix",
-                price: "₹299",
-                img: "https://via.placeholder.com/150",
-              },
-              {
-                name: "Neem Cake Fertilizer",
-                price: "₹399",
-                img: "https://via.placeholder.com/150",
-              },
-            ].map((product, i) => (
+          <div className="flex overflow-x-auto space-x-6 px-4 py-6 max-w-6xl mx-auto  hide-scrollbar">
+            {products.map((product, i) => (
               <div
+                className="w-50 h-70 bg-white rounded-2xl shadow-lg overflow-hidden relative group flex-shrink-0"
                 key={i}
-                className="bg-white text-black shadow-md rounded-lg overflow-hidden"
               >
+                {/* Product Image */}
                 <img
-                  src={product.img}
+                  src={product.image ? product.image : defaultProductImage}
                   alt={product.name}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">{product.name}</h3>
-                  <p className="text-[#c4f254] font-bold">{product.price}</p>
+
+                {/* Overlay Content */}
+                <div className="absolute inset-0 bg-[rgb(0,0,0,.5)] bg-opacity-70 flex flex-col justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 items-center gap-y-5">
+                  <h2 className="text-[#c4f254] text-xl font-semibold text-center">
+                    {product.name}
+                  </h2>
+
+                  <p className="text-white text-sm text-center">
+                    {product.description}
+                  </p>
+
+                  <button className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-[#b4e244] transition px-4 cursor-pointer">
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             ))}
