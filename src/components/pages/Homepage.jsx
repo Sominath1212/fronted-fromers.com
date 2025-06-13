@@ -8,7 +8,7 @@ import banner1 from "../../assets/images/background1.jpg";
 import banner2 from "../../assets/images/background2.jpg";
 import banner3 from "../../assets/images/background3.jpg";
 import banner4 from "../../assets/images/background4.jpg";
-import { toast } from "react-toastify";
+
 const LandingPage = () => {
   const bannerImages = [banner1, banner2, banner3, banner4];
   const { fetchData, products } = useContext(ProductContext);
@@ -76,6 +76,8 @@ const LandingPage = () => {
                   key={i}
                 >
                   {/* Product Image */}
+
+                  
                   <img
                     src={product.image ? product.image : defaultProductImage}
                     alt={product.name}
