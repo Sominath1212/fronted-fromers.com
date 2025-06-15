@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../context/productContext";
+
 import { useParams } from "react-router-dom";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import { toast } from "react-toastify";
@@ -8,7 +9,12 @@ import { LuBoxes } from "react-icons/lu";
 import { IoIosPricetag } from "react-icons/io";
 import { FaWeightHanging } from "react-icons/fa";
 import categoryDefautImage from "../../assets/images/categoryimage.jpg";
+
+import { CardContext } from "../../context/cardContext";
+import Cartpage from "./Cartpage";
 function ProductDetails() {
+  const { add_to_card, cardItems } = useContext(CardContext);
+
   const { products } = useContext(ProductContext);
   // console.log(products);
   const [product, setProduct] = useState({});
@@ -25,7 +31,7 @@ function ProductDetails() {
         .then((responce) => {
           if (responce) {
             setProduct(responce.data.product[0]);
-            console.log(responce.data.product[0]);
+            // console.log(responce.data.product[0]);
           }
         });
     } catch (err) {
@@ -34,6 +40,9 @@ function ProductDetails() {
   }, []);
   const { id } = useParams();
 
+  useEffect(() => {
+    console.log(cardItems);
+  }, [cardItems]);
   return (
     <div className="relative top-15 min-h-[98%]  flex flex-col items-center justify-center">
       <div className="  flex  h-[70%]  w-full relative px-20">
@@ -77,7 +86,10 @@ function ProductDetails() {
             <h2 className="text-3xl">{product.stock}</h2>
           </div>
 
-          <button className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-green-500 transition  px-4 cursor-pointer group ">
+          <button
+            onClick={() => add_to_card(product, 1)}
+            className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-green-500 transition  px-4 cursor-pointer group "
+          >
             Add To Cart
           </button>
         </div>

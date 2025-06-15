@@ -3,15 +3,59 @@ import { ProductContext } from "../../context/productContext";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import defautCategoryImage from "../../assets/images/categoryimage.jpg";
 import { Link } from "react-router-dom";
+import { CardContext } from "../../context/cardContext";
+import axios from "axios";
 function Productspage() {
+  const categoriesapi = "localhost:5000/api/v1/category/get-categories";
+  const productapi = "http://localhost:5000/api/v1/product/get-all-products";
+  const { add_to_card } = useContext(CardContext);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const { products, categories } = useContext(ProductContext);
-  console.log(products);
-  console.log(categories);
+
+  // const { categories } = useContext(ProductContext);
+const [categories,setCategories]=useState([])
+  const [products, setProducts] = useState([]);
+  // console.log(products);
+  // console.log(categories);
 
   useEffect(() => {
-    console.log(selectedCategory);
-  }, [selectedCategory]);
+    try {
+      axios
+        .get(productapi, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          // console.log("Response:", response.data.products);
+          setProducts(response.data.products);
+        })
+        .catch((error) => {
+          console.error("Error fetching products:", error);
+          toast.error("Failed to fetch products");
+        });
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("Something went wrong");
+    }
+
+    try {
+      axios
+        .get("http://localhost:5000/api/v1/category/get-categories", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((repsonce) => {
+          // console.log("category", repsonce.data.categories);
+          setCategories(repsonce.data.categories);
+        });
+    } catch (error) {
+      console.error("Unexpected error:", err);
+      toast.error("Something went wrong in category");
+    }
+  }, []);
 
   const filteredProducts =
     selectedCategory === "All"
@@ -34,7 +78,7 @@ function Productspage() {
               <img
                 src={category.image ? category.image : defautCategoryImage}
                 alt=""
-                className={`w-25 h-25 object-fill rounded-full border-2 hover:border-green-500 ${
+                className={`w-18 h-18 object-fill rounded-full border-2 hover:border-green-500 ${
                   selectedCategory === category.title ? "border-green-500" : ""
                 }`}
               />
@@ -66,14 +110,20 @@ function Productspage() {
                   {product.name}
                 </h2>
 
-                <p className="text-white text-sm text-center">
-                  {product.description}
+                <p className="text-white text-sm text-center line-clamp-1">
+                  {product.desiption}
                 </p>
                 <Link to={`/productdetails/${product._id}`}>
                   <button className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-[#b4e244] transition px-4 cursor-pointer group ">
                     View Product
                   </button>
                 </Link>
+                <button
+                  onClick={() => add_to_card(product, 1)}
+                  className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-[#b4e244] transition px-4 cursor-pointer group "
+                >
+                  Add TO Card
+                </button>
               </div>
             </div>
           );

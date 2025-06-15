@@ -50,7 +50,7 @@ const LandingPage = () => {
             eco-friendly fertilizers and pesticides that ensure healthy crops
             and better yields.
           </p>
-          <Link to={"/product"}>
+          <Link to={"/products"}>
             <button className="border border-black font-semibold cursor-pointer bg-[#c4f254] hover:bg-[#d5ef93] text-black px-6 py-3 rounded-lg shadow-lg transition-all duration-300">
               Shop Now
             </button>

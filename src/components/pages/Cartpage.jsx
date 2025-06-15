@@ -1,6 +1,15 @@
 import { MdDelete } from "react-icons/md";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
+import { CardContext } from "../../context/cardContext";
+import { useContext, useEffect, useState } from "react";
 function Cartpage() {
+  const { add_to_card, cardItems, totalAmount, remove_from_card } =useContext(CardContext);
+
+  useEffect(() => {
+    console.log(totalAmount);
+    console.log(cardItems);
+  }, []);
+
   const product = {
     _id: "684901f7258f741da7d2b0a4",
     name: "AgroBoost Fertilizers",
@@ -28,7 +37,7 @@ function Cartpage() {
 
         {/* /product card making */}
         <div className="overflow-y-scroll h-[70%]">
-          <div className="flex items-center justify-evenly p-5 shadow  ">
+          <div className="flex items-center justify-evenly px-5 py-1 shadow  ">
             <div className="w-[40%]  flex  p-2 space-x-2 items-center ">
               <img src={defaultProductImage} className="h-28 " />
 
@@ -39,7 +48,7 @@ function Cartpage() {
             </div>
             <div className="w-[20%]  font-bold uppercase ">{product.price}</div>
             <div className="w-[20%]  font-bold uppercase ">{1}</div>
-            <div className="w-[20%]  font-bold uppercase text-2xl ">
+            <div className="w-[20%]  font-bold uppercase text-2xl cursor-pointer">
               <MdDelete />
             </div>
           </div>
@@ -53,18 +62,16 @@ function Cartpage() {
               </div>
             </div>
             <div className="w-[20%] font-bold uppercase ">{product.price}</div>
-            <div className="w-[20%] font-bold uppercase flex items-center ">{1}</div>
+            <div className="w-[20%] font-bold uppercase flex items-center ">
+              {1}
+            </div>
             <div className="w-[20%] font-bold uppercase text-2xl ">
               <MdDelete />
             </div>
           </div>
-          
         </div>
-        
       </div>
-      <div className="w-[30%] h-screen bg-red-300 flex text-center justify-center flex-col">
-        
-      </div>
+      <div className="w-[30%] h-screen bg-red-300 flex text-center justify-center flex-col"></div>
     </div>
   );
 }

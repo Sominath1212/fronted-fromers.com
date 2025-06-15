@@ -12,28 +12,31 @@ import ProductDetails from "./components/pages/ProductDetails";
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from "./context/authContext";
 import { ProductContextProvider } from "./context/productContext";
+import { CardContextProvider } from "./context/cardContext";
 import Profile from "./components/pages/Profile";
 function App() {
   return (
     <>
-      <ProductContextProvider>
-        <AuthContextProvider>
-          <Navbar />
-          <Routes>
-            <Route path="/login" element={<Loginpage />} />
-            <Route path="/" element={<Homepage />} />
-            <Route path="/sign-up" element={<Registerpage />} />
-            <Route path="/products" element={<Productspage />} />
-            <Route path="/cart" element={<Cartpage />} />
-            <Route path="/aboutus" element={<Aboutuspage />} />
-            <Route path="/contactus" element={<Contactuspage />} />
-            <Route path="/policy" element={<Policypage />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/productdetails/:id" element={<ProductDetails />} />
-          </Routes>
-          <ToastContainer />
-        </AuthContextProvider>
-      </ProductContextProvider>
+      <CardContextProvider>
+        <ProductContextProvider>
+          <AuthContextProvider>
+            <Navbar />
+            <Routes>
+              <Route path="/login" element={<Loginpage />} />
+              <Route path="/" element={<Homepage />} />
+              <Route path="/sign-up" element={<Registerpage />} />
+              <Route path="/products" element={<Productspage />} />
+              <Route path="/cart" element={<Cartpage />} />
+              <Route path="/aboutus" element={<Aboutuspage />} />
+              <Route path="/contactus" element={<Contactuspage />} />
+              <Route path="/policy" element={<Policypage />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/productdetails/:id" element={<ProductDetails />} />
+            </Routes>
+            <ToastContainer />
+          </AuthContextProvider>
+        </ProductContextProvider>
+      </CardContextProvider>
     </>
   );
 }
