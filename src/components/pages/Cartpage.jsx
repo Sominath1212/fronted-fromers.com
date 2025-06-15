@@ -3,28 +3,14 @@ import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import { CardContext } from "../../context/cardContext";
 import { useContext, useEffect, useState } from "react";
 function Cartpage() {
-  const { add_to_card, cardItems, totalAmount, remove_from_card } =useContext(CardContext);
+  const { add_to_card, cardItems, totalAmount, remove_from_card } =
+    useContext(CardContext);
 
   useEffect(() => {
     console.log(totalAmount);
     console.log(cardItems);
   }, []);
 
-  const product = {
-    _id: "684901f7258f741da7d2b0a4",
-    name: "AgroBoost Fertilizers",
-    price: 406.59,
-    image: null,
-    categoryId: {
-      _id: "6846e78483e94d4c3b2f1a62",
-      title: "Fertilizers",
-      image: null,
-    },
-    stock: 96,
-    description:
-      "AgroShield Plus is a highly effective broad-spectrum systemic pesticide formulated to provide long-lasting protection against a wide range of chewing and sucking pests. Engineered using advanced chemical technology, it penetrates plant tissues and is translocated throughout the plant, offering comprehensive protection from root to leaf.\n\nIts dual action formula acts both by contact and ingestion, ensuring quick knockdown and prolonged residual activity. AgroShield Plus is ideal for use in vegetables, fruits, cotton, rice, pulses, and ornamental plants.",
-    weight: "250g",
-  };
   return (
     <div className="relative pt-12 flex min-h-[100vh] ">
       <div className="w-[70%] px-5">
@@ -37,41 +23,93 @@ function Cartpage() {
 
         {/* /product card making */}
         <div className="overflow-y-scroll h-[70%]">
-          <div className="flex items-center justify-evenly px-5 py-1 shadow  ">
-            <div className="w-[40%]  flex  p-2 space-x-2 items-center ">
-              <img src={defaultProductImage} className="h-28 " />
+          {cardItems.length !== 0 ? (
+            cardItems.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-evenly p-5 shadow  "
+                >
+                  <div className="w-[40%]  flex  p-2 space-x-2 items-center ">
+                    <img src={defaultProductImage} className="h-28 " />
 
-              <div className="flex flex-col">
-                <h2 className="font-semibold text-xl">{product.name}</h2>
-                <p className="text-sm line-clamp-2">{product.description}</p>
-              </div>
-            </div>
-            <div className="w-[20%]  font-bold uppercase ">{product.price}</div>
-            <div className="w-[20%]  font-bold uppercase ">{1}</div>
-            <div className="w-[20%]  font-bold uppercase text-2xl cursor-pointer">
-              <MdDelete />
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly p-5 shadow  ">
-            <div className="w-[40%]  flex  p-2 space-x-2 items-center ">
-              <img src={defaultProductImage} className="h-28 " />
-
-              <div className="flex flex-col">
-                <h2 className="font-semibold text-xl">{product.name}</h2>
-                <p className="text-sm line-clamp-2">{product.description}</p>
-              </div>
-            </div>
-            <div className="w-[20%] font-bold uppercase ">{product.price}</div>
-            <div className="w-[20%] font-bold uppercase flex items-center ">
-              {1}
-            </div>
-            <div className="w-[20%] font-bold uppercase text-2xl ">
-              <MdDelete />
+                    <div className="flex flex-col">
+                      <h2 className="font-semibold text-xl">{item.name}</h2>
+                      <p className="text-sm line-clamp-2 w-[70%]">
+                        {item.item.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-[20%] font-bold uppercase ">
+                    {item.price}
+                  </div>
+                  <div className="w-[20%] font-bold uppercase flex items-center ">
+                    {item.count}
+                  </div>
+                  <div className="w-[20%] font-bold uppercase text-2xl ">
+                    <MdDelete className="cursor-pointer hover:text-[#cf4]" />
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <h2 className="text-center  flex-col flex items-center justify-center h-[100%] text-4xl font-bold">
+              No such Cart items present
+            </h2>
+          )}
+        </div>
+      </div>
+      <hr className="w-4 h-full bg-gray-500" />
+      <div className="w-[30%] h-screenflex text-center  space-y-5 flex-col px-12 py-2">
+        <div className="flex shadow-2xl bg-white space-y-3 rounded   text-start font-semibold w-[100%]">
+          <div className="flex space-y-3 flex-col p-5">
+            <h2 className="font-bold">Apply Coupon</h2>
+            <p>Using Promo Code</p>
+            <div className="flex justify-between gap-5 ">
+              <input
+                type="text"
+                id="first_name"
+                className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#cf4] dark:border-black dark:placeholder-black dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Coupon code"
+                required
+              />
+              <button
+                type="submit"
+                className="text-white bg-[#cf4] hover:bg-[#d1e893] focus:ring-4 outline-none border-none focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 cursor-pointer dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Apply
+              </button>
             </div>
           </div>
         </div>
+        <div className="flex w-full space-y-5 p-5 items-start text-start flex-col shadow-2xl rounded-2xl">
+          <h2 className="font-semibold text-xl">Total</h2>
+          <hr className="text-black bg-black h-[0.5px] w-full" />
+          <div className="flex items-start  flex-col w-full font-semibold">
+            <h2 className="flex items-start justify-between   w-full ">
+              <span>Total :</span> <span>${totalAmount.toFixed(2)}</span>
+            </h2>
+            <h2 className="flex items-start justify-between   w-full ">
+              <span>Delivery :</span>
+              <span> ${15}</span>
+            </h2>
+            <h2 className="flex items-start justify-between   w-full ">
+              <span>Discount :</span>
+              <span>${0}</span>{" "}
+            </h2>
+          </div>
+
+          <hr className="text-black bg-black h-[0.5px] w-full" />
+
+          <h2 className="flex items-start justify-between font-semibold   w-full ">
+            <span>SubTotal :</span> <span>{totalAmount + 15 + 0}</span>
+          </h2>
+          <hr />
+          <button className="text-white bg-[#cf4] hover:bg-[#d1e893] focus:ring-4 outline-none border-none focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 cursor-pointer dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Checkout
+          </button>
+        </div>
       </div>
-      <div className="w-[30%] h-screen bg-red-300 flex text-center justify-center flex-col"></div>
     </div>
   );
 }

@@ -55,7 +55,7 @@ const [categories,setCategories]=useState([])
       console.error("Unexpected error:", err);
       toast.error("Something went wrong in category");
     }
-  }, []);
+  });
 
   const filteredProducts =
     selectedCategory === "All"
