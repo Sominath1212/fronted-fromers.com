@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import { ProductContext } from "../../context/productContext";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
+import defautCategoryImage from '../../assets/images/categoryimage.jpg' 
 import banner1 from "../../assets/images/background1.jpg";
 import banner2 from "../../assets/images/background2.jpg";
 import banner3 from "../../assets/images/background3.jpg";
@@ -11,7 +12,7 @@ import banner4 from "../../assets/images/background4.jpg";
 
 const LandingPage = () => {
   const bannerImages = [banner1, banner2, banner3, banner4];
-  const { fetchData, products } = useContext(ProductContext);
+  const { fetchData, products,categories } = useContext(ProductContext);
 
   useEffect(() => {
     fetchData();
@@ -108,18 +109,12 @@ const LandingPage = () => {
         <section className="py-16 text-black text-center">
           <h2 className="text-3xl font-semibold mb-10 ">Popular Categories</h2>
           <div className="flex flex-wrap justify-center gap-6 px-4">
-            {[
-              "Organic Fertilizers",
-              "Liquid Fertilizers",
-              "Plant Growth Boosters",
-              "Pesticides",
-              "Soil Conditioners",
-            ].map((cat, i) => (
+            {categories.map((cat, i) => (
               <div
                 key={i}
                 className="bg-white text-black px-6 py-4 shadow-md rounded-lg text-lg font-medium hover:bg-green-100 transition"
               >
-                {cat}
+                {cat.title}
               </div>
             ))}
           </div>

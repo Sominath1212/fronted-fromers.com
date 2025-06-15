@@ -78,7 +78,7 @@ function ProductDetails() {
           </div>
 
           <button className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-green-500 transition  px-4 cursor-pointer group ">
-            View Product
+            Add To Cart
           </button>
         </div>
       </div>

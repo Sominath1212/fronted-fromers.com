@@ -32,10 +32,23 @@ export const ProductContextProvider = ({ children }) => {
       console.error("Unexpected error:", err);
       toast.error("Something went wrong");
     }
-    
 
-
-    
+    try {
+      axios
+        .get("http://localhost:5000/api/v1/category/get-categories", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((repsonce) => {
+          console.log("category", repsonce.data.categories);
+          setCategories(repsonce.data.categories);
+        });
+    } catch (error) {
+      console.error("Unexpected error:", err);
+      toast.error("Something went wrong in category");
+    }
   };
 
   const values = {
