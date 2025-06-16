@@ -1,14 +1,16 @@
 import { MdDelete } from "react-icons/md";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import { CardContext } from "../../context/cardContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { GrSubtractCircle } from "react-icons/gr";
 function Cartpage() {
-  const { add_to_card, cardItems, totalAmount, remove_from_card } =
+  const { add_to_cart, cartItems, totalAmount, remove_from_cart } =
     useContext(CardContext);
 
   useEffect(() => {
     console.log(totalAmount);
-    console.log(cardItems);
+    console.log(cartItems);
   }, []);
 
   return (
@@ -23,8 +25,8 @@ function Cartpage() {
 
         {/* /product card making */}
         <div className="overflow-y-scroll h-[70%]">
-          {cardItems.length !== 0 ? (
-            cardItems.map((item, i) => {
+          {cartItems.length !== 0 ? (
+            cartItems.map((item, i) => {
               return (
                 <div
                   key={i}
@@ -41,13 +43,26 @@ function Cartpage() {
                     </div>
                   </div>
                   <div className="w-[20%] font-bold uppercase ">
-                    {item.price}
+                    {item.price.toFixed(2)}
                   </div>
-                  <div className="w-[20%] font-bold uppercase flex items-center ">
+                  <div className="w-[20%] font-bold text-2xl space-x-1 uppercase flex items-center ">
+                    <GrSubtractCircle
+                      className="cursor-pointer hover:text-[#cf4]"
+                      onClick={() => {
+                        remove_from_cart(item.item._id);
+                      }}
+                    />
                     {item.count}
+                    <IoIosAddCircleOutline
+                      className="cursor-pointer hover:text-[#cf4]"
+                      onClick={() => add_to_cart(item.item)}
+                    />
                   </div>
                   <div className="w-[20%] font-bold uppercase text-2xl ">
-                    <MdDelete className="cursor-pointer hover:text-[#cf4]" />
+                    <MdDelete
+                      className="cursor-pointer hover:text-[#cf4]"
+                      // onClick={() => remove_from_card(item)}
+                    />
                   </div>
                 </div>
               );

@@ -1,44 +1,85 @@
 import { toast } from "react-toastify";
 import { createContext, useEffect, useState } from "react";
-import Cartpage from "../components/pages/Cartpage";
+
 export const CardContext = createContext();
 
 export const CardContextProvider = ({ children }) => {
-  const [cardItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
-  const add_to_card = (item) => {
-    const ispresent = cardItems.some((Cart) => Cart.item._id === item._id);
-    // console.log(ispresent);
 
-    if (!ispresent) {
-      setCartItems((prev) => [
-        ...prev,
-        { item: item, price: item.price, count: 1 },
-      ]);
-      setTotalAmount(totalAmount + item.price);
-      toast.success("new added");
-    } else {
-      for (let i = 0; i < cardItems.length; i++) {
-        if (cardItems[i].item._id == item._id) {
-          cardItems[i].count = cardItems[i].count + 1;
-          cardItems[i].price = cardItems[i].count * item.price;
+  const [cartItems, setCartItems] = useState(() => {
+    const storedCart = localStorage.getItem("cartItems");
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const add_to_cart = (item, count = 1) => {
+    const isPresent = cartItems.some((i) => i.item._id === item._id);
+
+    if (isPresent) {
+      const updatedCart = cartItems.map((ele) => {
+        if (ele.item._id === item._id) {
+          const updatedCount = ele.count + 1;
           setTotalAmount(totalAmount + item.price);
-          toast.success("Quantity incressed");
+          return {
+            ...ele,
+            count: updatedCount,
+            price: updatedCount * item.price,
+          };
         }
-      }
-    }
-  };
-  const remove_from_card = (item) => {
-    for (let i = 0; i < cardItems.length; i++) {
-      if (cardItems[i].item._id === item._id) {
-        cardItems[i].count = cardItems[i].count - 1;
-        cardItems[i].price = cardItems[i].price - item.price;
-        setTotalAmount(totalAmount - item.price);
-        toast.info("Descress");
-      }
+        return ele;
+      });
+      setCartItems(updatedCart);
+      toast.info("Item count incremented");
+    } else {
+      setCartItems((prev) => [...prev, { item, count, price: item.price }]);
+      toast.success("Item added to cart");
     }
   };
 
-  const value = { remove_from_card, totalAmount, add_to_card, cardItems };
+  useEffect(() => {
+    const total = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+    setTotalAmount(total);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const remove_from_cart = (id) => {
+    const updatedCart = cartItems
+      .map((ele) => {
+        if (ele.item._id === id) {
+          const updatedCount = ele.count - 1;
+          if (updatedCount <= 0) {
+            toast.warning("Item removed");
+            return null; // remove item if count is 0
+          }
+          return {
+            ...ele,
+            count: updatedCount,
+            price: updatedCount * ele.item.price,
+          };
+        }
+        return ele;
+      })
+      .filter(Boolean); // removes null items
+
+    setCartItems(updatedCart);
+  };
+
+  // 🚪 Clear cart on order or logout
+  const clear_cart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
+    toast.success("Cart cleared");
+  };
+
+  const value = {
+    remove_from_cart,
+    totalAmount,
+    add_to_cart,
+    clear_cart,
+    cartItems,
+  };
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
 };

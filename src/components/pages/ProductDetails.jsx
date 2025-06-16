@@ -13,7 +13,7 @@ import categoryDefautImage from "../../assets/images/categoryimage.jpg";
 import { CardContext } from "../../context/cardContext";
 import Cartpage from "./Cartpage";
 function ProductDetails() {
-  const { add_to_card, cardItems } = useContext(CardContext);
+  const { add_to_cart, cartItems } = useContext(CardContext);
 
   const { products } = useContext(ProductContext);
   // console.log(products);
@@ -41,8 +41,8 @@ function ProductDetails() {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(cardItems);
-  }, [cardItems]);
+    console.log(cartItems);
+  }, [cartItems]);
   return (
     <div className="relative top-15 min-h-[98%]  flex flex-col items-center justify-center">
       <div className="  flex  h-[70%]  w-full relative px-20">
@@ -87,7 +87,7 @@ function ProductDetails() {
           </div>
 
           <button
-            onClick={() => add_to_card(product, 1)}
+            onClick={() => add_to_cart(product, 1)}
             className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-green-500 transition  px-4 cursor-pointer group "
           >
             Add To Cart

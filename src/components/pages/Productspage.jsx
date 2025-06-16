@@ -4,15 +4,16 @@ import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import defautCategoryImage from "../../assets/images/categoryimage.jpg";
 import { Link } from "react-router-dom";
 import { CardContext } from "../../context/cardContext";
+import { toast } from "react-toastify";
 import axios from "axios";
 function Productspage() {
   const categoriesapi = "localhost:5000/api/v1/category/get-categories";
   const productapi = "http://localhost:5000/api/v1/product/get-all-products";
-  const { add_to_card } = useContext(CardContext);
+  const { add_to_cart } = useContext(CardContext);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   // const { categories } = useContext(ProductContext);
-const [categories,setCategories]=useState([])
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   // console.log(products);
   // console.log(categories);
@@ -89,7 +90,7 @@ const [categories,setCategories]=useState([])
       </div>
       <hr />
       <h1 className="font-bold text-4xl uppercase my-3">Our Products</h1>
-      <div className="grid grid-col-5 md:grid-cols-4 sm:grid-cols-2">
+      <div className="grid grid-col-5 md:grid-cols-4 sm:grid-cols-2 self-center px-20">
         {filteredProducts.map((product, i) => {
           return (
             <div
@@ -119,7 +120,7 @@ const [categories,setCategories]=useState([])
                   </button>
                 </Link>
                 <button
-                  onClick={() => add_to_card(product, 1)}
+                  onClick={() => add_to_cart(product, 1)}
                   className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-[#b4e244] transition px-4 cursor-pointer group "
                 >
                   Add TO Card
