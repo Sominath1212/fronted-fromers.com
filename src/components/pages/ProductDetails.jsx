@@ -75,7 +75,7 @@ function ProductDetails() {
           </div>
           <div className="flex  items-start justify-start text-3xl">
             <IoIosPricetag className="relative top-1 m-5" />
-            <h2>${product.price}</h2>
+            <h2>₹{product.price}</h2>
           </div>
           <div className="flex  items-start justify-start text-3xl">
             <FaWeightHanging className="relative top-1 m-5" />

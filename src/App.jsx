@@ -14,6 +14,8 @@ import { AuthContextProvider } from "./context/authContext";
 import { ProductContextProvider } from "./context/productContext";
 import { CardContextProvider } from "./context/cardContext";
 import Profile from "./components/pages/Profile";
+import Success from "./components/pages/Success";
+import Cancle from "./components/pages/Cancle";
 function App() {
   return (
     <>
@@ -32,6 +34,9 @@ function App() {
               <Route path="/policy" element={<Policypage />} />
               <Route path="/profile/:id" element={<Profile />} />
               <Route path="/productdetails/:id" element={<ProductDetails />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/cancle" element={<Cancle />} />
+              Rout
             </Routes>
             <ToastContainer />
           </AuthContextProvider>
