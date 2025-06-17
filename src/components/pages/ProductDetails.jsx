@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../context/productContext";
-
 import { useParams } from "react-router-dom";
 import defaultProductImage from "../../assets/images/farmproduct.jpg";
 import { toast } from "react-toastify";
@@ -9,54 +8,55 @@ import { LuBoxes } from "react-icons/lu";
 import { IoIosPricetag } from "react-icons/io";
 import { FaWeightHanging } from "react-icons/fa";
 import categoryDefautImage from "../../assets/images/categoryimage.jpg";
-
 import { CardContext } from "../../context/cardContext";
-import Cartpage from "./Cartpage";
+
 function ProductDetails() {
   const { add_to_cart, cartItems } = useContext(CardContext);
-
-  const { products } = useContext(ProductContext);
-  // console.log(products);
+  const { id } = useParams();
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    try {
-      axios
-        .get(`http://localhost:5000/api/v1/product/get-product/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((responce) => {
-          if (responce) {
-            setProduct(responce.data.product[0]);
-            // console.log(responce.data.product[0]);
-          }
-        });
-    } catch (err) {
-      toast.error("somethig happened");
-    }
-  }, []);
-  const { id } = useParams();
+    axios
+      .get(`http://localhost:5000/api/v1/product/get-product/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        if (response) {
+          setProduct(response.data.product[0]);
+        }
+      })
+      .catch(() => {
+        toast.error("Something went wrong");
+      });
+  }, [id]);
 
   useEffect(() => {
     console.log(cartItems);
   }, [cartItems]);
+
   return (
-    <div className="relative top-15 min-h-[98%]  flex flex-col items-center justify-center">
-      <div className="  flex  h-[70%]  w-full relative px-20">
-        <div className="w-[30%]  h-[50%] rounded-2xl">
-          {" "}
+    <div className="relative min-h-screen py-6 px-4 md:px-20 flex flex-col items-center justify-start">
+      <div className="w-full flex flex-col md:flex-row gap-6 items-start">
+        {/* Product Image */}
+        <div className="w-full md:w-1/3">
           <img
             src={product.image ? product.image : defaultProductImage}
             alt={product.name}
-            className="w-full h-full rounded-2xl p-5 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full max-h-[300px] object-cover rounded-2xl p-2"
           />
         </div>
-        <div className="w-[70%] h-auto flex text-start  flex-col justify-start gap-2  p-5">
-          <h2 className="text-5xl font-bold ">{product.name}</h2>
-          <div className="flex items-center space-x-2 text-xl font-semibold">
+
+        {/* Product Info */}
+        <div className="w-full md:w-2/3 flex flex-col gap-4 text-start p-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+            {product.name}
+          </h2>
+
+          {/* Category */}
+          <div className="flex items-center space-x-3 text-lg">
             <img
               src={
                 product?.categoryId?.image
@@ -64,31 +64,41 @@ function ProductDetails() {
                   : categoryDefautImage
               }
               alt={product?.categoryId?.title}
-              className="w-12 h-12  rounded-full  border-2 border-[#c4f254]  object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-10 h-10 rounded-full border-2 border-[#c4f254] object-cover"
             />
-            <h2 className="font-semibold">{product?.categoryId?.title}</h2>
+            <h2 className="font-medium">{product?.categoryId?.title}</h2>
           </div>
 
-          <div className="flex  items-start flex-col ">
-            <h2 className=" w-auto text-3xl">Description:</h2>
-            <h2 className="overflow-y-scroll h-20 ">{product.description}</h2>
-          </div>
-          <div className="flex  items-start justify-start text-3xl">
-            <IoIosPricetag className="relative top-1 m-5" />
-            <h2>₹{product.price}</h2>
-          </div>
-          <div className="flex  items-start justify-start text-3xl">
-            <FaWeightHanging className="relative top-1 m-5" />
-            <h2 className="text-3xl">{product.weight}</h2>
-          </div>
-          <div className="flex  items-start justify-start text-3xl">
-            <LuBoxes className="relative top-1 m-5" />
-            <h2 className="text-3xl">{product.stock}</h2>
+          {/* Description */}
+          <div>
+            <h2 className="text-xl font-semibold mb-1">Description:</h2>
+            <p className="max-h-[80px] overflow-y-auto pr-1 text-sm sm:text-base text-gray-100">
+              {product.description}
+            </p>
           </div>
 
+          {/* Price */}
+          <div className="flex items-center text-lg sm:text-xl">
+            <IoIosPricetag className="mr-3 text-[#c4f254]" />
+            <span>₹{product.price}</span>
+          </div>
+
+          {/* Weight */}
+          <div className="flex items-center text-lg sm:text-xl">
+            <FaWeightHanging className="mr-3 text-[#c4f254]" />
+            <span>{product.weight}</span>
+          </div>
+
+          {/* Stock */}
+          <div className="flex items-center text-lg sm:text-xl">
+            <LuBoxes className="mr-3 text-[#c4f254]" />
+            <span>{product.stock}</span>
+          </div>
+
+          {/* Add to Cart Button */}
           <button
             onClick={() => add_to_cart(product, 1)}
-            className="bg-[#c4f254] text-black font-semibold py-2 rounded hover:bg-green-500 transition  px-4 cursor-pointer group "
+            className="mt-4 w-full sm:w-auto bg-[#c4f254] text-black font-semibold py-2 px-6 rounded hover:bg-green-500 transition"
           >
             Add To Cart
           </button>

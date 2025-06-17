@@ -1,145 +1,128 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginimage from "../../assets/images/loginimage.jpg";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-function Loginpage() {
+
+function Registerpage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      axios
-        .post("http://localhost:5000/api/v1/auth/register", {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        {
           name,
           email,
           password,
-        })
-        .then((responce) => {
-          console.log(responce);
-          if (responce.status == 200) {
-            toast.success(responce.data.message);
-            navigate("/login");
-            setEmail("");
-            setName("");
-            setPassword("");
-          } else {
-            toast.info(responce.data.message);
-            setEmail("");
-            setName("");
-            setPassword("");
-          }
-        });
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        navigate("/login");
+        setEmail("");
+        setName("");
+        setPassword("");
+      } else {
+        toast.info(response.data.message);
+        setEmail("");
+        setName("");
+        setPassword("");
+      }
     } catch (err) {
       toast.error("Internal Error");
-      throw err;
     }
-
-    // console.log(name, email, password);
-    // toast.success(email);
   };
+
   return (
-    <main className="flex justify-center bg-[#c4f254] w-full h-[100vh] relative ">
-      <div className=" bg-white h-[70%] flex relative  shadow-4xl rounded-2xl realtive top-24">
-        <section className="w-[300px] relative right-1  overflow-hidden">
+    <main className="flex justify-center items-center relative md:top-10 bg-[#c4f254] min-h-screen p-4">
+      <div className="bg-white  sm:w-[50%]  max-w-4xl shadow-2xl rounded-2xl flex flex-col md:flex-row overflow-hidden">
+        {/* Image Section */}
+        <section className="md:w-1/2 w-full h-64 md:h-auto">
           <img
             src={loginimage}
-            className=" w-full h-full object-contain rounded-tl-2xl rounded-bl-2xl"
+            alt="Login"
+            className="w-full h-full object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none"
           />
         </section>
-        <section className="w-[400px] p-5 flex flex-col my-2 gap-y-10">
-          <h1 className="text-[#c4f254]  text-3xl font-bold  text-center">
+
+        {/* Form Section */}
+        <section className="md:w-1/2 w-full p-6 sm:p-8 flex flex-col justify-center">
+          <h1 className="text-[#c4f254] text-2xl sm:text-3xl font-bold text-center mb-6">
             Sign Up
           </h1>
-          <form className="w-full " onSubmit={handleSubmit}>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  for="inline-full-name"
-                >
-                  Name
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-[#c4f254]"
-                  id="inline-full-name"
-                  type="text"
-                  value={name}
-                  required
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name"
-                />
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  for="inline-full-name"
-                >
-                  Email
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-[#c4f254]"
-                  id="inline-full-name"
-                  type="email"
-                  value={email}
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="example@me.com"
-                />
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  for="inline-password"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  value={password}
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-[#c4f254]"
-                  id="inline-password"
-                  type="password"
-                  placeholder="******************"
-                />
-              </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1">
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                required
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-[#c4f254]"
+              />
             </div>
 
-            <div className="md:flex md:items-center">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3 flex items-center justify-between">
-                <button
-                  className="shadow border border-[#c4f254] hover:bg-[#c4f254] focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded cursor-pointer"
-                  type="button"
-                >
-                  Cancle
-                </button>
-                <button
-                  className="shadow bg-[#c4f254]  hover:bg-white hover:border-[#c4f254] cursor-pointer focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
-                  type="submit"
-                >
-                  Sign Up
-                </button>
-              </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="example@me.com"
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-[#c4f254]"
+              />
             </div>
-            <div className="shadow text-center md:w-2/3  relative left-30 top-5 bg-[#c4f254] hover:bg-white hover:border-[#c4f254] cursor-pointer focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded">
-              <Link to={"/login"}>Login</Link>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="******************"
+                value={password}
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-[#c4f254]"
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-2 mt-4">
+              <button
+                type="button"
+                className="w-1/2 border border-[#c4f254] hover:bg-[#c4f254] text-black font-bold py-2 rounded transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="w-1/2 bg-[#c4f254] hover:bg-white hover:border-[#c4f254] border text-black font-bold py-2 rounded transition"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <div className="text-center mt-4">
+              <Link
+                to="/login"
+                className="inline-block bg-[#c4f254] hover:bg-white hover:border-[#c4f254] px-6 py-2 rounded font-bold text-black border transition"
+              >
+                Already have an account? Login
+              </Link>
             </div>
           </form>
         </section>
@@ -148,4 +131,4 @@ function Loginpage() {
   );
 }
 
-export default Loginpage;
+export default Registerpage;

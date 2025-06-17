@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 import Loginpage from "./components/pages/Loginpage";
 import Registerpage from "./components/pages/Registerpage";
 import Homepage from "./components/pages/Homepage";
@@ -24,19 +25,41 @@ function App() {
           <AuthContextProvider>
             <Navbar />
             <Routes>
-              <Route path="/login" element={<Loginpage />} />
               <Route path="/" element={<Homepage />} />
+              <Route path="/login" element={<Loginpage />} />
               <Route path="/sign-up" element={<Registerpage />} />
               <Route path="/products" element={<Productspage />} />
-              <Route path="/cart" element={<Cartpage />} />
+              <Route path="/productdetails/:id" element={<ProductDetails />} />
               <Route path="/aboutus" element={<Aboutuspage />} />
               <Route path="/contactus" element={<Contactuspage />} />
               <Route path="/policy" element={<Policypage />} />
-              <Route path="/profile/:id" element={<Profile />} />
-              <Route path="/productdetails/:id" element={<ProductDetails />} />
-              <Route path="/success" element={<Success />} />
+
+              {/* ✅ Protected Routes */}
+              <Route
+                path="/cart"
+                element={
+                  <PrivateRoute>
+                    <Cartpage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile/:id"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/success"
+                element={
+                  <PrivateRoute>
+                    <Success />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/cancle" element={<Cancle />} />
-              Rout
             </Routes>
             <ToastContainer />
           </AuthContextProvider>
